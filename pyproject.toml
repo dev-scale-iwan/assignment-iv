@@ -1,0 +1,7 @@
+[project]
+name = "assignment-iv"
+version = "0.1.0"
+description = "Assignment IV - Python"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
