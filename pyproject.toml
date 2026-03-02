@@ -5,6 +5,7 @@ description = "Assignment IV - Python"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "alembic>=1.18.4",
     "celery>=5.6.2",
     "fastapi>=0.135.0",
     "markdown>=3.10.2",
