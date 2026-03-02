@@ -6,6 +6,8 @@ https://github.com/Devscale-Indonesia/agentic-workflow-batch3
 
 ```bash
 make dev
+# Open a new terminal and run
+make celery
 ```
 
 ### Usage

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def generate_queries(topic: str) -> QueriesSchema:
     response = open_ai_client.chat.completions.parse(
-        model="gpt-4o-mini",
+        model="qwen/qwen3-vl-30b-a3b-thinking",
         messages=[
             {"role": "system", "content": "Generate 5 queries to search into the web based on user topic"},
             {"role": "user", "content": f"Topic: {topic}"},
@@ -34,7 +34,7 @@ def search_web(query: str) -> str:
     print(f"Results: {results}")
 
     response = open_ai_client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="qwen/qwen3-vl-235b-a22b-thinking",
         messages=[
             {"role": "system", "content": "Summarize this into informative content, please include data, numbers and url/sources"},
             {"role": "user", "content": f"Search Result: {json.dumps(results)}"},
@@ -48,7 +48,7 @@ def search_web(query: str) -> str:
 
 def generate_report(topic: str, research_context: str):
     response = open_ai_client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="qwen/qwen3-235b-a22b-thinking-2507",
         messages=[
             {"role": "system", "content": REPORT_SYSTEM_PROMPT.format(research_context=research_context)},
             {"role": "user", "content": f"Topic: {topic}"},
