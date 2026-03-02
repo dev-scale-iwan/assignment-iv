@@ -13,7 +13,7 @@ make celery
 ### Usage
 
 ```bash
-curl -X POST http://localhost:8000/research \
+curl -X POST http://localhost:8000/setorsampah \
   -H "Content-Type: application/json" \
   -d '{"input": "Selvi setor sampah tembaga 3 kg"}'
 ```
