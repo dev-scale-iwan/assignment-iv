@@ -11,10 +11,11 @@ from .schema import QueriesSchema
 logger = logging.getLogger(__name__)
 
 def generate_queries(topic: str) -> QueriesSchema:
+    print(f"Generating queries for topic: {topic}")
     response = open_ai_client.chat.completions.parse(
         model="google/gemini-3-flash-preview",
         messages=[
-            {"role": "system", "content": "Generate 5 queries to search into the web based on user topic"},
+            {"role": "system", "content": "Generate 1 queries to search into the web based on user topic"},
             {"role": "user", "content": f"Topic: {topic}"},
         ],
         response_format=QueriesSchema,
@@ -31,7 +32,7 @@ def generate_queries(topic: str) -> QueriesSchema:
 def search_web(query: str) -> str:
     results = tavily_client.search(query=query, search_depth="advanced", include_raw_content="markdown")
 
-    print(f"Results: {results}")
+    print(f"Search Web : {results}")
 
     response = open_ai_client.chat.completions.create(
         model="openai/gpt-oss-120b",
@@ -47,6 +48,7 @@ def search_web(query: str) -> str:
 
 
 def generate_report(topic: str, research_context: str):
+    print(f"Generating report for topic: {topic}")
     response = open_ai_client.chat.completions.create(
         model="openai/gpt-oss-120b",
         messages=[
