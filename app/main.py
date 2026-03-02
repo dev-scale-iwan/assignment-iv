@@ -3,7 +3,7 @@ from scalar_fastapi import get_scalar_api_reference
 
 
 from app.modules.research.schema import ResearchInput
-from app.modules.research.tasks import research_task
+from app.modules.research.tasks import setorsampah_task
 from app.core.setting import settings
 
 app = FastAPI(title=settings.APP_NAME, version=settings.VERSION)
@@ -12,10 +12,23 @@ app = FastAPI(title=settings.APP_NAME, version=settings.VERSION)
 def health_check():
     return {"status": "ok"}
 
-@app.post("/research")
-def do_research(body: ResearchInput):
+@app.post("/setorsampah", openapi_extra={
+    "requestBody": {
+        "content": {
+            "application/json": {
+                "examples": {
+                    "Selvi": {
+                        "summary": "Sample Input",
+                        "value": {"input": "Selvi setor sampah plastik 2 kg"}
+                    }
+                }
+            }
+        }
+    }
+})
+def do_setorsampah(body: ResearchInput):
     print(f"Hi")
-    research_task.delay(body.input)
+    setorsampah_task.delay(body.input)
 
     return {"message": "Processing ....!"}
 

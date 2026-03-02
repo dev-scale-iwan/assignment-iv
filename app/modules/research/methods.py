@@ -34,7 +34,7 @@ def extract_waste_info(user_input: str) -> WasteExtraction:
     response = open_ai_client.chat.completions.parse(
         model="google/gemini-3-flash-preview",
         messages=[
-            {"role": "system", "content": "Extract waste information (type, weight, and unit) from user input"},
+            {"role": "system", "content": "Extract waste information (name, type, weight, and unit) from user input. If name is not specified, use 'Umum'."},
             {"role": "user", "content": f"Input: {user_input}"},
         ],
         response_format=WasteExtraction,
@@ -85,12 +85,12 @@ def search_web(query: str) -> str:
     return response.choices[0].message.content
 
 
-def generate_report(title: str, research_context: str):
+def generate_report(title: str, research_context: str, current_date: str):
     print(f"Generating report for topic: {title}")
     response = open_ai_client.chat.completions.create(
         model="openai/gpt-oss-120b",
         messages=[
-            {"role": "system", "content": REPORT_SYSTEM_PROMPT.format(research_context=research_context)},
+            {"role": "system", "content": REPORT_SYSTEM_PROMPT.format(research_context=research_context, current_date=current_date)},
             {"role": "user", "content": f"Topic: {title}"},
         ],
         extra_body={"reasoning": {"enabled": True}},

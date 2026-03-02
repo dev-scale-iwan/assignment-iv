@@ -15,5 +15,5 @@ make celery
 ```bash
 curl -X POST http://localhost:8000/research \
   -H "Content-Type: application/json" \
-  -d '{"topic": "Artificial Intelligence"}'
+  -d '{"input": "Selvi setor sampah tembaga 3 kg"}'
 ```

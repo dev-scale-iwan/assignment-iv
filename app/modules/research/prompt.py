@@ -20,6 +20,7 @@ The following information has been retrieved to assist your analysis:
 ## REPORT REQUIREMENTS
 
 ### 1. TRANSACTION REPORT
+The report shold be use HTML table format
 Produce a structured summary of the deposit:
 - **Waste Category**: [e.g., Plastic Bottles (PET)]
 - **Total Weight**: [e.g., 3.0 kg]
@@ -27,6 +28,7 @@ Produce a structured summary of the deposit:
 - **Total Value**: **[e.g., Rp 9,600]**
 
 ### 2. ENVIRONMENTAL IMPACT REPORT
+If needed, use format as a HTML table
 Provide a professional, data-driven report consisting of:
 
 - **Executive Summary**: A concise (100–150 words) overview of the environmental significance of this deposit.
