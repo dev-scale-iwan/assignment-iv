@@ -6,17 +6,55 @@ from app.utils.openapi import open_ai_client
 from app.utils.tavily import tavily_client
 
 from .prompt import REPORT_SYSTEM_PROMPT
-from .schema import QueriesSchema
+from .schema import QueriesSchema, WasteExtraction, PriceExtraction
 
 logger = logging.getLogger(__name__)
 
-def generate_queries(topic: str) -> QueriesSchema:
-    print(f"Generating queries for topic: {topic}")
+def extract_pricing_info(research_context: str, jenis_sampah: str) -> PriceExtraction:
+    print(f"Extracting price for: {jenis_sampah}")
+    response = open_ai_client.chat.completions.parse(
+        model="google/gemini-3.1-pro-preview",
+        messages=[
+            {"role": "system", "content": "Extract the best current price for the given waste type from the context."},
+            {"role": "user", "content": f"Waste Type: {jenis_sampah} \n\n Context: {research_context}"},
+        ],
+        response_format=PriceExtraction,
+    )
+
+    if not response:
+        raise ValueError("No response from OpenAI for pricing extraction")
+    
+    parsed_data = response.choices[0].message.parsed.model_dump()
+    logger.info(f"Extracted Price: {parsed_data}")
+    
+    return PriceExtraction(**parsed_data)
+
+def extract_waste_info(user_input: str) -> WasteExtraction:
+    print(f"Extracting waste info for: {user_input}")
+    response = open_ai_client.chat.completions.parse(
+        model="google/gemini-3-flash-preview",
+        messages=[
+            {"role": "system", "content": "Extract waste information (type, weight, and unit) from user input"},
+            {"role": "user", "content": f"Input: {user_input}"},
+        ],
+        response_format=WasteExtraction,
+    )
+
+    if not response:
+        raise ValueError("No response from OpenAI for extraction")
+    
+    parsed_data = response.choices[0].message.parsed.model_dump()
+    logger.info(f"Extracted info: {parsed_data}")
+    
+    return WasteExtraction(**parsed_data)
+
+def generate_queries(title: str) -> QueriesSchema:
+    print(f"Generating queries for topic: {title}")
     response = open_ai_client.chat.completions.parse(
         model="google/gemini-3-flash-preview",
         messages=[
             {"role": "system", "content": "Generate 1 queries to search into the web based on user topic"},
-            {"role": "user", "content": f"Topic: {topic}"},
+            {"role": "user", "content": f"Topic: {title}"},
         ],
         response_format=QueriesSchema,
     )
@@ -47,13 +85,13 @@ def search_web(query: str) -> str:
     return response.choices[0].message.content
 
 
-def generate_report(topic: str, research_context: str):
-    print(f"Generating report for topic: {topic}")
+def generate_report(title: str, research_context: str):
+    print(f"Generating report for topic: {title}")
     response = open_ai_client.chat.completions.create(
         model="openai/gpt-oss-120b",
         messages=[
             {"role": "system", "content": REPORT_SYSTEM_PROMPT.format(research_context=research_context)},
-            {"role": "user", "content": f"Topic: {topic}"},
+            {"role": "user", "content": f"Topic: {title}"},
         ],
         extra_body={"reasoning": {"enabled": True}},
     )

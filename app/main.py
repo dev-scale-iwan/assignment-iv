@@ -15,7 +15,7 @@ def health_check():
 @app.post("/research")
 def do_research(body: ResearchInput):
     print(f"Hi")
-    research_task.delay(body.topic)
+    research_task.delay(body.input)
 
     return {"message": "Processing ....!"}
 
