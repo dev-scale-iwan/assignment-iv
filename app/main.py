@@ -4,8 +4,9 @@ from scalar_fastapi import get_scalar_api_reference
 
 from app.modules.research.schema import ResearchInput
 from app.modules.research.tasks import research_task
+from app.core.setting import settings
 
-app = FastAPI(title="Research API", version="1.0.0")
+app = FastAPI(title=settings.APP_NAME, version=settings.VERSION)
 
 @app.get("/health")
 def health_check():
